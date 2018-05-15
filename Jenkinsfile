@@ -20,5 +20,10 @@ pipeline {
                 sh 'host -t TXT pgp.michaelholley.us | awk -F \'"\' \'{print $2}\''
             }
         }
+        stage('Deploy to stage?') { agent none
+            step {
+                input 'Deploy to stage?'
+            }
+        }
     }
 }
