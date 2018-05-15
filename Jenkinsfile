@@ -16,13 +16,27 @@ pipeline {
         }
         stage('Who Am I') { agent any
             steps {
-                echo "${env.NEW_VAR}"
                 sh 'host -t TXT pgp.michaelholley.us | awk -F \'"\' \'{print $2}\''
             }
         }
         stage('Deploy to stage?') { agent none
             steps {
                 input 'Deploy to stage?'
+            }
+        }
+        stage('Parallel') { agent any
+            failFast true
+            parallel {
+                stage('Build 1') {
+                    steps {
+                        echo "It's Me!"
+                    }
+                }
+                stage('Build 2') {
+                    steps {
+                        echo "No, its me!"
+                    }
+                }
             }
         }
     }
